@@ -1,0 +1,68 @@
+<div class="dashboard">
+  <header class="dashboard__header">
+    <h1>Workforce Operations Dashboard</h1>
+    <p>
+      Get a pulse on office presence, leave plans, and time sheet compliance to keep
+      teams aligned and projects on track.
+    </p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Workforce dashboard tabs">
+    <button
+      *ngFor="let tab of tabs; trackBy: trackTabsById"
+      type="button"
+      role="tab"
+      [attr.aria-selected]="activeTab() === tab.id"
+      [attr.aria-controls]="tab.id + '-panel'"
+      [class.tabs__tab--active]="activeTab() === tab.id"
+      class="tabs__tab"
+      (click)="setActiveTab(tab.id)"
+    >
+      {{ tab.label }}
+    </button>
+  </nav>
+
+  <section
+    class="tab-panel"
+    role="tabpanel"
+    [attr.id]="activeTab() + '-panel'"
+    [attr.aria-live]="'polite'"
+  >
+    <ng-container *ngIf="tabContent[activeTab()] as content">
+      <header class="tab-panel__header">
+        <h2>{{ content.title }}</h2>
+        <p>{{ content.description }}</p>
+      </header>
+
+      <div class="metrics-grid" role="list">
+        <article class="metric-card" role="listitem" *ngFor="let metric of content.metrics">
+          <p class="metric-card__label">{{ metric.label }}</p>
+          <p class="metric-card__value">{{ metric.value }}</p>
+          <span
+            class="metric-card__change"
+            [class.metric-card__change--positive]="metric.positive !== false"
+            [class.metric-card__change--negative]="metric.positive === false"
+          >
+            {{ metric.change }}
+          </span>
+        </article>
+      </div>
+
+      <div class="insights-grid">
+        <article class="insight-card" *ngFor="let insight of content.insights">
+          <h3>{{ insight.title }}</h3>
+          <ul>
+            <li *ngFor="let point of insight.points">{{ point }}</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="action-plan">
+        <h3>Action Plan</h3>
+        <ol>
+          <li *ngFor="let action of content.actions">{{ action }}</li>
+        </ol>
+      </div>
+    </ng-container>
+  </section>
+</div>
