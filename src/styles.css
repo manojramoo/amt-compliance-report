@@ -1,1 +1,113 @@
 /* You can add global styles to this file, and also import other style files */
+
+.presence-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(52, 108, 255, 0.18);
+  background: rgba(52, 108, 255, 0.04);
+}
+
+.presence-form h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #1c2c4c;
+}
+
+.presence-form__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.presence-form__month {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-width: 220px;
+}
+
+.presence-form__month label,
+.presence-form__field label {
+  font-weight: 600;
+  color: #1c2c4c;
+}
+
+.presence-form__month input,
+.presence-form__field input {
+  border-radius: 10px;
+  border: 1px solid rgba(16, 28, 58, 0.12);
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  color: #1b2d55;
+  background-color: #fff;
+}
+
+.presence-form__month input:focus,
+.presence-form__field input:focus {
+  outline: 2px solid rgba(52, 108, 255, 0.35);
+  outline-offset: 1px;
+}
+
+.presence-form__days {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.presence-form__day {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(140px, 0.6fr) repeat(2, minmax(200px, 1fr));
+  gap: 1rem;
+  align-items: end;
+  padding: 1rem;
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(52, 108, 255, 0.08), rgba(255, 255, 255, 0.9));
+  border: 1px solid rgba(52, 108, 255, 0.12);
+}
+
+.presence-form__date {
+  font-weight: 600;
+  color: #1c2c4c;
+}
+
+.presence-form__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #1c2c4c;
+}
+
+.presence-form__toggle input {
+  width: 18px;
+  height: 18px;
+}
+
+.presence-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.presence-form__field input:disabled {
+  background-color: rgba(16, 28, 58, 0.04);
+  color: #6c7a92;
+}
+
+.presence-form__error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #b43d3d;
+}
+
+@media (max-width: 720px) {
+  .presence-form__day {
+    grid-template-columns: 1fr;
+  }
+}

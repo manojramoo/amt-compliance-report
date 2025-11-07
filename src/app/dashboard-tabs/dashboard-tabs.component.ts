@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 type TabIdentifier = 'return-to-office' | 'leave-plans' | 'time-sheet-defaulter';
 
@@ -26,16 +27,25 @@ interface TabContent {
 @Component({
   selector: 'app-dashboard-tabs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './dashboard-tabs.component.html',
   styleUrl: './dashboard-tabs.component.css'
 })
 export class DashboardTabsComponent {
+  private readonly formBuilder = inject(FormBuilder);
+
   readonly tabs: { id: TabIdentifier; label: string }[] = [
     { id: 'return-to-office', label: 'Return to Office' },
     { id: 'leave-plans', label: 'Leave Plans' },
     { id: 'time-sheet-defaulter', label: 'Time Sheet Defaulter' }
   ];
+
+  readonly officePresenceForm = this.formBuilder.group({
+    month: this.formBuilder.control(this.formatMonth(new Date()), {
+      validators: Validators.required
+    }),
+    days: this.formBuilder.array([])
+  });
 
   readonly tabContent: Record<TabIdentifier, TabContent> = {
     'return-to-office': {
@@ -134,11 +144,116 @@ export class DashboardTabsComponent {
 
   protected readonly activeTab = signal<TabIdentifier>(this.tabs[0].id);
 
+  constructor() {
+    const currentMonth = this.officePresenceForm.get('month')?.value;
+    if (typeof currentMonth === 'string') {
+      this.populateDaysForMonth(currentMonth);
+    }
+  }
+
   protected setActiveTab(tabId: TabIdentifier): void {
     this.activeTab.set(tabId);
   }
 
   protected trackTabsById(_: number, tab: { id: TabIdentifier }): TabIdentifier {
     return tab.id;
+  }
+
+  protected get officePresenceDays(): FormArray<FormGroup> {
+    return this.officePresenceForm.get('days') as FormArray<FormGroup>;
+  }
+
+  protected onMonthChange(): void {
+    const monthValue = this.officePresenceForm.get('month')?.value;
+    if (typeof monthValue === 'string') {
+      this.populateDaysForMonth(monthValue);
+    } else {
+      this.clearOfficePresenceDays();
+    }
+  }
+
+  protected onPresenceToggle(dayIndex: number): void {
+    const dayGroup = this.officePresenceDays.at(dayIndex) as FormGroup | null;
+    if (dayGroup) {
+      this.updateDayValidators(dayGroup);
+    }
+  }
+
+  protected trackPresenceByDate(_: number, control: FormGroup): string {
+    const dateValue = control.get('date')?.value;
+    if (dateValue instanceof Date) {
+      return dateValue.toISOString();
+    }
+    if (typeof dateValue === 'string') {
+      return dateValue;
+    }
+    return `${_}`;
+  }
+
+  private populateDaysForMonth(monthValue: string): void {
+    this.clearOfficePresenceDays();
+    const [yearString, monthString] = monthValue.split('-');
+    const year = Number(yearString);
+    const month = Number(monthString);
+
+    if (!Number.isFinite(year) || !Number.isFinite(month) || month < 1 || month > 12) {
+      return;
+    }
+
+    const daysInMonth = new Date(year, month, 0).getDate();
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      const date = new Date(year, month - 1, day);
+      const dayGroup = this.createDayGroup(date);
+      this.officePresenceDays.push(dayGroup);
+      this.updateDayValidators(dayGroup);
+    }
+  }
+
+  private createDayGroup(date: Date): FormGroup {
+    return this.formBuilder.group({
+      date: this.formBuilder.control(date.toISOString()),
+      present: this.formBuilder.control(false),
+      location: this.formBuilder.control({ value: '', disabled: true }),
+      reason: this.formBuilder.control('', { validators: Validators.required })
+    });
+  }
+
+  private updateDayValidators(dayGroup: FormGroup): void {
+    const presentControl = dayGroup.get('present');
+    const locationControl = dayGroup.get('location');
+    const reasonControl = dayGroup.get('reason');
+    const isPresent = presentControl?.value === true;
+
+    if (isPresent) {
+      locationControl?.enable({ emitEvent: false });
+      locationControl?.setValidators(Validators.required);
+      locationControl?.updateValueAndValidity({ emitEvent: false });
+
+      reasonControl?.setValue('', { emitEvent: false });
+      reasonControl?.clearValidators();
+      reasonControl?.disable({ emitEvent: false });
+      reasonControl?.updateValueAndValidity({ emitEvent: false });
+    } else {
+      reasonControl?.enable({ emitEvent: false });
+      reasonControl?.setValidators(Validators.required);
+      reasonControl?.updateValueAndValidity({ emitEvent: false });
+
+      locationControl?.setValue('', { emitEvent: false });
+      locationControl?.clearValidators();
+      locationControl?.disable({ emitEvent: false });
+      locationControl?.updateValueAndValidity({ emitEvent: false });
+    }
+  }
+
+  private clearOfficePresenceDays(): void {
+    const daysArray = this.officePresenceDays;
+    while (daysArray.length > 0) {
+      daysArray.removeAt(daysArray.length - 1);
+    }
+  }
+
+  private formatMonth(date: Date): string {
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${date.getFullYear()}-${month}`;
   }
 }
