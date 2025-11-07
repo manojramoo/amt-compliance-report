@@ -203,6 +203,11 @@ export class DashboardTabsComponent {
     const daysInMonth = new Date(year, month, 0).getDate();
     for (let day = 1; day <= daysInMonth; day += 1) {
       const date = new Date(year, month - 1, day);
+
+      if (this.isWeekend(date)) {
+        continue;
+      }
+
       const dayGroup = this.createDayGroup(date);
       this.officePresenceDays.push(dayGroup);
       this.updateDayValidators(dayGroup);
@@ -243,6 +248,11 @@ export class DashboardTabsComponent {
       locationControl?.disable({ emitEvent: false });
       locationControl?.updateValueAndValidity({ emitEvent: false });
     }
+  }
+
+  private isWeekend(date: Date): boolean {
+    const dayOfWeek = date.getDay();
+    return dayOfWeek === 0 || dayOfWeek === 6;
   }
 
   private clearOfficePresenceDays(): void {
