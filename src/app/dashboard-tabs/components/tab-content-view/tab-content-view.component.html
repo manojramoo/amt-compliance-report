@@ -1,0 +1,36 @@
+<header class="tab-panel__header">
+  <h2>{{ content.title }}</h2>
+  <p>{{ content.description }}</p>
+</header>
+
+<div class="metrics-grid" role="list">
+  <article class="metric-card" role="listitem" *ngFor="let metric of content.metrics; trackBy: trackMetricsByLabel">
+    <p class="metric-card__label">{{ metric.label }}</p>
+    <p class="metric-card__value">{{ metric.value }}</p>
+    <span
+      class="metric-card__change"
+      [class.metric-card__change--positive]="metric.positive !== false"
+      [class.metric-card__change--negative]="metric.positive === false"
+    >
+      {{ metric.change }}
+    </span>
+  </article>
+</div>
+
+<div class="insights-grid">
+  <article class="insight-card" *ngFor="let insight of content.insights; trackBy: trackInsightsByTitle">
+    <h3>{{ insight.title }}</h3>
+    <ul>
+      <li *ngFor="let point of insight.points; trackBy: trackPointsByIndex">{{ point }}</li>
+    </ul>
+  </article>
+</div>
+
+<div class="action-plan">
+  <h3>Action Plan</h3>
+  <ol>
+    <li *ngFor="let action of content.actions; trackBy: trackPointsByIndex">{{ action }}</li>
+  </ol>
+</div>
+
+<ng-content></ng-content>
