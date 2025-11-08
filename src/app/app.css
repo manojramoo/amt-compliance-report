@@ -1,3 +1,27 @@
 :host {
   display: block;
 }
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background-color: #f1f4fb;
+  color: #1b2d55;
+}
+
+.app-shell__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.app-shell__content {
+  padding: 0 2.5rem 2.5rem;
+}
+
+@media (max-width: 720px) {
+  .app-shell__content {
+    padding: 0 1.5rem 2rem;
+  }
+}
