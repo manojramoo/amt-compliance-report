@@ -1,0 +1,54 @@
+<app-tab-content-view [content]="content">
+  <section class="presence-form">
+    <h3>Office Presence Data</h3>
+    <form [formGroup]="officePresenceForm" class="presence-form__body" novalidate>
+      <div class="presence-form__month">
+        <label for="presence-month">Month</label>
+        <input id="presence-month" type="month" formControlName="month" (change)="onMonthChange()" />
+      </div>
+
+      <div formArrayName="days" class="presence-form__days">
+        <div
+          class="presence-form__day"
+          *ngFor="let dayGroup of officePresenceDays.controls; let i = index; trackBy: trackPresenceByDate"
+          [formGroupName]="i"
+        >
+          <div class="presence-form__date">
+            {{ dayGroup.get('date')?.value | date: 'EEEE, MMM d' }}
+          </div>
+
+          <label class="presence-form__toggle">
+            <input type="checkbox" formControlName="present" (change)="onPresenceToggle(i)" />
+            Present
+          </label>
+
+          <div class="presence-form__field">
+            <label [attr.for]="'presence-location-' + i">Location</label>
+            <input
+              [id]="'presence-location-' + i"
+              type="text"
+              formControlName="location"
+              placeholder="e.g. Headquarters, Remote"
+            />
+            <p class="presence-form__error" *ngIf="dayGroup.get('location')?.hasError('required') && dayGroup.get('location')?.touched">
+              Location is required when marked present.
+            </p>
+          </div>
+
+          <div class="presence-form__field">
+            <label [attr.for]="'presence-reason-' + i">Reason (if not present)</label>
+            <input
+              [id]="'presence-reason-' + i"
+              type="text"
+              formControlName="reason"
+              placeholder="Vacation, Travel, etc."
+            />
+            <p class="presence-form__error" *ngIf="dayGroup.get('reason')?.hasError('required') && dayGroup.get('reason')?.touched">
+              Reason is required when marked absent.
+            </p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</app-tab-content-view>
