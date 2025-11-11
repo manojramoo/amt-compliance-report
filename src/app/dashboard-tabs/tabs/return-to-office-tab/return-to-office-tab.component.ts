@@ -23,6 +23,11 @@ export class ReturnToOfficeTabComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly httpClient = inject(HttpClient);
 
+  private static readonly VALID_USERNAME = 'compliance-admin';
+  private static readonly VALID_PASSWORD = 'Return2Office!';
+
+  protected isAuthenticated = false;
+  protected loginError: string | null = null;
   protected isSubmitting = false;
   protected submitSuccess = false;
   protected submitError: string | null = null;
@@ -68,6 +73,35 @@ export class ReturnToOfficeTabComponent {
     }),
     reasonForNotComing: this.formBuilder.control('')
   });
+
+  protected readonly loginForm = this.formBuilder.group({
+    username: this.formBuilder.control('', { validators: Validators.required }),
+    password: this.formBuilder.control('', { validators: Validators.required })
+  });
+
+  protected onLogin(): void {
+    this.loginError = null;
+
+    this.loginForm.markAllAsTouched();
+    this.loginForm.updateValueAndValidity({ emitEvent: false });
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    const { username, password } = this.loginForm.getRawValue();
+
+    if (
+      username?.trim() === ReturnToOfficeTabComponent.VALID_USERNAME &&
+      password === ReturnToOfficeTabComponent.VALID_PASSWORD
+    ) {
+      this.isAuthenticated = true;
+      this.loginError = null;
+      return;
+    }
+
+    this.loginError = 'Invalid username or password.';
+  }
 
   protected onSubmit(): void {
     this.submitSuccess = false;
