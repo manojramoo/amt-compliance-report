@@ -1,7 +1,7 @@
 <app-tab-content-view [content]="content">
   <section class="presence-form">
     <h3>Office Presence Data</h3>
-    <form [formGroup]="officePresenceForm" class="presence-form__body" novalidate>
+    <form [formGroup]="officePresenceForm" class="presence-form__body" novalidate (ngSubmit)="onSubmit()">
       <div class="presence-form__month">
         <label for="presence-month">Month</label>
         <input id="presence-month" type="month" formControlName="month" (change)="onMonthChange()" />
@@ -49,6 +49,19 @@
           </div>
         </div>
       </div>
+
+      <div class="presence-form__actions">
+        <button type="submit" [disabled]="officePresenceForm.invalid || isSubmitting">
+          {{ isSubmitting ? 'Submitting...' : 'Submit Presence' }}
+        </button>
+      </div>
+
+      <p class="presence-form__status presence-form__status--success" *ngIf="submitSuccess" aria-live="polite">
+        Office presence submitted successfully.
+      </p>
+      <p class="presence-form__status presence-form__status--error" *ngIf="submitError" aria-live="assertive">
+        {{ submitError }}
+      </p>
     </form>
   </section>
 </app-tab-content-view>
