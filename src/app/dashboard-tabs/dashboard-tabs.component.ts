@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation, signal } from '@angular/core';
 import { TabIdentifier } from './models/tab-content.model';
 import { LeavePlansTabComponent } from './tabs/leave-plans-tab/leave-plans-tab.component';
+import { ReportsTabComponent } from './tabs/reports-tab/reports-tab.component';
 import { ReturnToOfficeTabComponent } from './tabs/return-to-office-tab/return-to-office-tab.component';
-import { TimeSheetDefaulterTabComponent } from './tabs/time-sheet-defaulter-tab/time-sheet-defaulter-tab.component';
 
 @Component({
   selector: 'app-dashboard-tabs',
@@ -12,7 +12,7 @@ import { TimeSheetDefaulterTabComponent } from './tabs/time-sheet-defaulter-tab/
     CommonModule,
     ReturnToOfficeTabComponent,
     LeavePlansTabComponent,
-    TimeSheetDefaulterTabComponent
+    ReportsTabComponent
   ],
   templateUrl: './dashboard-tabs.component.html',
   styleUrl: './dashboard-tabs.component.css',
@@ -22,7 +22,7 @@ export class DashboardTabsComponent {
   readonly tabs: { id: TabIdentifier; label: string }[] = [
     { id: 'return-to-office', label: 'Return to Office' },
     { id: 'leave-plans', label: 'Leave Plans' },
-    { id: 'time-sheet-defaulter', label: 'Time Sheet Defaulter' }
+    { id: 'reports', label: 'Reports' }
   ];
 
   protected readonly activeTab = signal<TabIdentifier>(this.tabs[0].id);

@@ -1,4 +1,4 @@
-export type TabIdentifier = 'return-to-office' | 'leave-plans' | 'time-sheet-defaulter';
+export type TabIdentifier = 'return-to-office' | 'leave-plans' | 'reports';
 
 export interface Metric {
   label: string;
