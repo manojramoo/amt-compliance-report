@@ -58,6 +58,16 @@
         </p>
       </div>
 
+      <div class="presence-form__field">
+        <label for="presence-reason">Reason for Not Coming <span aria-hidden="true">(Optional)</span></label>
+        <textarea
+          id="presence-reason"
+          formControlName="reasonForNotComing"
+          rows="3"
+          placeholder="Share any context for days spent away from the office"
+        ></textarea>
+      </div>
+
       <div class="presence-form__actions">
         <button type="submit" [disabled]="officePresenceForm.invalid || isSubmitting">
           {{ isSubmitting ? 'Submitting...' : 'Submit Presence' }}

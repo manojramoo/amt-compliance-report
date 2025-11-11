@@ -10,6 +10,7 @@ type OfficePresencePayload = {
   corpId: string;
   workLocation: string;
   daysInOffice: number;
+  reasonForNotComing?: string;
 };
 
 @Component({
@@ -64,7 +65,8 @@ export class ReturnToOfficeTabComponent {
     workLocation: this.formBuilder.control('', { validators: Validators.required }),
     daysInOffice: this.formBuilder.control<number | null>(null, {
       validators: [Validators.required, Validators.min(0)]
-    })
+    }),
+    reasonForNotComing: this.formBuilder.control('')
   });
 
   protected onSubmit(): void {
@@ -79,11 +81,13 @@ export class ReturnToOfficeTabComponent {
     }
 
     const rawValue = this.officePresenceForm.getRawValue();
+    const reasonForNotComing = rawValue.reasonForNotComing?.trim() ?? '';
     const payload: OfficePresencePayload = {
       name: rawValue.name ?? '',
       corpId: rawValue.corpId ?? '',
       workLocation: rawValue.workLocation ?? '',
-      daysInOffice: this.coerceDaysInOffice(rawValue.daysInOffice)
+      daysInOffice: this.coerceDaysInOffice(rawValue.daysInOffice),
+      ...(reasonForNotComing !== '' ? { reasonForNotComing } : {})
     };
 
     this.isSubmitting = true;
