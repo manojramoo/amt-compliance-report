@@ -1,0 +1,32 @@
+<section class="reports">
+  <header class="reports__header">
+    <h2>Compliance Reports</h2>
+    <p>Monitor key reporting metrics to follow up with teams before deadlines slip.</p>
+  </header>
+
+  <nav class="reports__tabs" role="tablist" aria-label="Compliance reports">
+    <button
+      *ngFor="let tab of reportTabs; trackBy: trackReportTabsById"
+      type="button"
+      role="tab"
+      [attr.aria-selected]="activeReportTab() === tab.id"
+      [attr.aria-controls]="tab.id + '-report-panel'"
+      [class.reports__tab--active]="activeReportTab() === tab.id"
+      class="reports__tab"
+      (click)="setActiveReportTab(tab.id)"
+    >
+      {{ tab.label }}
+    </button>
+  </nav>
+
+  <section
+    class="reports__panel"
+    role="tabpanel"
+    [attr.id]="activeReportTab() + '-report-panel'"
+    [attr.aria-live]="'polite'"
+  >
+    <ng-container [ngSwitch]="activeReportTab()">
+      <app-time-sheet-defaulter-tab *ngSwitchCase="'time-sheet-defaulter'"></app-time-sheet-defaulter-tab>
+    </ng-container>
+  </section>
+</section>
