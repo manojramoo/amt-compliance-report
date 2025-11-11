@@ -7,31 +7,70 @@
     </p>
   </header>
 
-  <nav class="tabs" role="tablist" aria-label="Workforce dashboard tabs">
-    <button
-      *ngFor="let tab of tabs; trackBy: trackTabsById"
-      type="button"
-      role="tab"
-      [attr.aria-selected]="activeTab() === tab.id"
-      [attr.aria-controls]="tab.id + '-panel'"
-      [class.tabs__tab--active]="activeTab() === tab.id"
-      class="tabs__tab"
-      (click)="setActiveTab(tab.id)"
-    >
-      {{ tab.label }}
-    </button>
-  </nav>
+  <section class="dashboard__section" aria-labelledby="forms-section-title">
+    <div class="dashboard__section-header">
+      <h2 id="forms-section-title">Forms</h2>
+      <p>Manage office presence and planned leave submissions.</p>
+    </div>
 
-  <section
-    class="tab-panel"
-    role="tabpanel"
-    [attr.id]="activeTab() + '-panel'"
-    [attr.aria-live]="'polite'"
-  >
-    <ng-container [ngSwitch]="activeTab()">
-      <app-return-to-office-tab *ngSwitchCase="'return-to-office'"></app-return-to-office-tab>
-      <app-leave-plans-tab *ngSwitchCase="'leave-plans'"></app-leave-plans-tab>
-      <app-time-sheet-defaulter-tab *ngSwitchCase="'time-sheet-defaulter'"></app-time-sheet-defaulter-tab>
-    </ng-container>
+    <nav class="tabs" role="tablist" aria-label="Forms tabs">
+      <button
+        *ngFor="let tab of formTabs; trackBy: trackFormTabsById"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeFormTab() === tab.id"
+        [attr.aria-controls]="tab.id + '-panel'"
+        [class.tabs__tab--active]="activeFormTab() === tab.id"
+        class="tabs__tab"
+        (click)="setActiveFormTab(tab.id)"
+      >
+        {{ tab.label }}
+      </button>
+    </nav>
+
+    <section
+      class="tab-panel"
+      role="tabpanel"
+      [attr.id]="activeFormTab() + '-panel'"
+      [attr.aria-live]="'polite'"
+    >
+      <ng-container [ngSwitch]="activeFormTab()">
+        <app-return-to-office-tab *ngSwitchCase="'return-to-office'"></app-return-to-office-tab>
+        <app-leave-plans-tab *ngSwitchCase="'leave-plans'"></app-leave-plans-tab>
+      </ng-container>
+    </section>
+  </section>
+
+  <section class="dashboard__section" aria-labelledby="reports-section-title">
+    <div class="dashboard__section-header">
+      <h2 id="reports-section-title">Reports</h2>
+      <p>Track compliance insights across workforce reporting.</p>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Reports tabs">
+      <button
+        *ngFor="let tab of reportTabs; trackBy: trackReportTabsById"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeReportTab() === tab.id"
+        [attr.aria-controls]="tab.id + '-panel'"
+        [class.tabs__tab--active]="activeReportTab() === tab.id"
+        class="tabs__tab"
+        (click)="setActiveReportTab(tab.id)"
+      >
+        {{ tab.label }}
+      </button>
+    </nav>
+
+    <section
+      class="tab-panel"
+      role="tabpanel"
+      [attr.id]="activeReportTab() + '-panel'"
+      [attr.aria-live]="'polite'"
+    >
+      <ng-container [ngSwitch]="activeReportTab()">
+        <app-time-sheet-defaulter-tab *ngSwitchCase="'time-sheet-defaulter'"></app-time-sheet-defaulter-tab>
+      </ng-container>
+    </section>
   </section>
 </div>

@@ -16,6 +16,30 @@
   gap: 2rem;
 }
 
+.dashboard__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dashboard__section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dashboard__section-header h2 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  color: #1b2d55;
+}
+
+.dashboard__section-header p {
+  margin: 0.25rem 0 0;
+  color: #4b5f80;
+  max-width: 640px;
+}
+
 .dashboard__header h1 {
   font-size: clamp(2rem, 4vw, 2.8rem);
   margin-bottom: 0.5rem;

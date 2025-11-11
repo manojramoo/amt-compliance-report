@@ -5,6 +5,9 @@ import { LeavePlansTabComponent } from './tabs/leave-plans-tab/leave-plans-tab.c
 import { ReturnToOfficeTabComponent } from './tabs/return-to-office-tab/return-to-office-tab.component';
 import { TimeSheetDefaulterTabComponent } from './tabs/time-sheet-defaulter-tab/time-sheet-defaulter-tab.component';
 
+type FormTabIdentifier = Exclude<TabIdentifier, 'time-sheet-defaulter'>;
+type ReportTabIdentifier = Extract<TabIdentifier, 'time-sheet-defaulter'>;
+
 @Component({
   selector: 'app-dashboard-tabs',
   standalone: true,
@@ -19,19 +22,42 @@ import { TimeSheetDefaulterTabComponent } from './tabs/time-sheet-defaulter-tab/
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardTabsComponent {
-  readonly tabs: { id: TabIdentifier; label: string }[] = [
+  readonly formTabs: { id: FormTabIdentifier; label: string }[] = [
     { id: 'return-to-office', label: 'Return to Office' },
-    { id: 'leave-plans', label: 'Leave Plans' },
+    { id: 'leave-plans', label: 'Leave Plans' }
+  ];
+
+  readonly reportTabs: { id: ReportTabIdentifier; label: string }[] = [
     { id: 'time-sheet-defaulter', label: 'Time Sheet Defaulter' }
   ];
 
-  protected readonly activeTab = signal<TabIdentifier>(this.tabs[0].id);
+  protected readonly activeFormTab = signal<FormTabIdentifier>(
+    this.formTabs[0].id
+  );
 
-  protected setActiveTab(tabId: TabIdentifier): void {
-    this.activeTab.set(tabId);
+  protected readonly activeReportTab = signal<ReportTabIdentifier>(
+    this.reportTabs[0].id
+  );
+
+  protected setActiveFormTab(tabId: FormTabIdentifier): void {
+    this.activeFormTab.set(tabId);
   }
 
-  protected trackTabsById(_: number, tab: { id: TabIdentifier }): TabIdentifier {
+  protected setActiveReportTab(tabId: ReportTabIdentifier): void {
+    this.activeReportTab.set(tabId);
+  }
+
+  protected trackFormTabsById(
+    _: number,
+    tab: { id: FormTabIdentifier }
+  ): FormTabIdentifier {
+    return tab.id;
+  }
+
+  protected trackReportTabsById(
+    _: number,
+    tab: { id: ReportTabIdentifier }
+  ): ReportTabIdentifier {
     return tab.id;
   }
 }
