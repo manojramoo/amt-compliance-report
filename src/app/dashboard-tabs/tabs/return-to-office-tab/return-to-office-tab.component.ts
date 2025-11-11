@@ -1,17 +1,35 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TabContentViewComponent } from '../../components/tab-content-view/tab-content-view.component';
 import { TabContent } from '../../models/tab-content.model';
 
+type OfficePresenceDayPayload = {
+  date: string;
+  present: boolean;
+  location: string;
+  reason: string;
+};
+
+type OfficePresencePayload = {
+  month: string;
+  days: OfficePresenceDayPayload[];
+};
+
 @Component({
   selector: 'app-return-to-office-tab',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TabContentViewComponent],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, TabContentViewComponent],
   templateUrl: './return-to-office-tab.component.html'
 })
 export class ReturnToOfficeTabComponent {
   private readonly formBuilder = inject(FormBuilder);
+  private readonly httpClient = inject(HttpClient);
+
+  protected isSubmitting = false;
+  protected submitSuccess = false;
+  protected submitError: string | null = null;
 
   protected readonly content: TabContent = {
     title: 'Return to Office Overview',
@@ -77,6 +95,48 @@ export class ReturnToOfficeTabComponent {
     if (dayGroup) {
       this.updateDayValidators(dayGroup);
     }
+  }
+
+  protected onSubmit(): void {
+    this.submitSuccess = false;
+    this.submitError = null;
+
+    this.officePresenceForm.markAllAsTouched();
+    this.officePresenceForm.updateValueAndValidity({ emitEvent: false });
+
+    if (this.officePresenceForm.invalid) {
+      return;
+    }
+
+    const rawValue = this.officePresenceForm.getRawValue();
+    const rawDays = (rawValue.days ?? []) as Array<{
+      date: string;
+      present: boolean;
+      location?: string | null;
+      reason?: string | null;
+    }>;
+    const payload: OfficePresencePayload = {
+      month: rawValue.month ?? '',
+      days: rawDays.map((day) => ({
+        date: day.date,
+        present: day.present,
+        location: day.location ?? '',
+        reason: day.reason ?? ''
+      }))
+    };
+
+    this.isSubmitting = true;
+    this.httpClient.post('/api/office-presence', payload).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.submitSuccess = true;
+      },
+      error: (error) => {
+        console.error('Office presence submission failed', error);
+        this.isSubmitting = false;
+        this.submitError = 'We could not submit the office presence data. Please try again.';
+      }
+    });
   }
 
   protected trackPresenceByDate(_: number, control: FormGroup): string {
