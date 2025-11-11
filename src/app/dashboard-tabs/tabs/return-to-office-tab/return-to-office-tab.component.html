@@ -1,128 +1,85 @@
 <app-tab-content-view [content]="content">
-  <section class="presence-form" *ngIf="!isAuthenticated; else officePresenceFormTemplate">
-    <h3>Authorized Access Required</h3>
-    <form [formGroup]="loginForm" class="presence-form__body" novalidate (ngSubmit)="onLogin()">
+  <section class="presence-form">
+    <h3>Office Presence Submission</h3>
+    <form [formGroup]="officePresenceForm" class="presence-form__body" novalidate (ngSubmit)="onSubmit()">
       <div class="presence-form__field">
-        <label for="presence-username">Username</label>
+        <label for="presence-name">Name</label>
         <input
-          id="presence-username"
+          id="presence-name"
           type="text"
-          formControlName="username"
-          placeholder="Enter the authorized username"
+          formControlName="name"
+          placeholder="Enter your full name"
         />
-        <p class="presence-form__error" *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched">
-          Username is required.
+        <p class="presence-form__error" *ngIf="officePresenceForm.get('name')?.hasError('required') && officePresenceForm.get('name')?.touched">
+          Name is required.
         </p>
       </div>
 
       <div class="presence-form__field">
-        <label for="presence-password">Password</label>
+        <label for="presence-corp-id">Corp ID</label>
         <input
-          id="presence-password"
-          type="password"
-          formControlName="password"
-          placeholder="Enter the authorized password"
+          id="presence-corp-id"
+          type="text"
+          formControlName="corpId"
+          placeholder="Enter your corporate ID"
         />
-        <p class="presence-form__error" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
-          Password is required.
+        <p class="presence-form__error" *ngIf="officePresenceForm.get('corpId')?.hasError('required') && officePresenceForm.get('corpId')?.touched">
+          Corp ID is required.
         </p>
+      </div>
+
+      <div class="presence-form__field">
+        <label for="presence-location">Work Location</label>
+        <input
+          id="presence-location"
+          type="text"
+          formControlName="workLocation"
+          placeholder="e.g. Headquarters, Remote"
+        />
+        <p class="presence-form__error" *ngIf="officePresenceForm.get('workLocation')?.hasError('required') && officePresenceForm.get('workLocation')?.touched">
+          Work location is required.
+        </p>
+      </div>
+
+      <div class="presence-form__field">
+        <label for="presence-days">Number of Office Days (per month)</label>
+        <input
+          id="presence-days"
+          type="number"
+          min="0"
+          formControlName="daysInOffice"
+          placeholder="Enter the number of days you visited the office"
+        />
+        <p class="presence-form__error" *ngIf="officePresenceForm.get('daysInOffice')?.hasError('required') && officePresenceForm.get('daysInOffice')?.touched">
+          Please provide the number of days in office.
+        </p>
+        <p class="presence-form__error" *ngIf="officePresenceForm.get('daysInOffice')?.hasError('min') && officePresenceForm.get('daysInOffice')?.touched">
+          Days in office cannot be negative.
+        </p>
+      </div>
+
+      <div class="presence-form__field">
+        <label for="presence-reason">Reason for Not Coming <span aria-hidden="true">(Optional)</span></label>
+        <textarea
+          id="presence-reason"
+          formControlName="reasonForNotComing"
+          rows="3"
+          placeholder="Share any context for days spent away from the office"
+        ></textarea>
       </div>
 
       <div class="presence-form__actions">
-        <button type="submit">
-          Sign in
+        <button type="submit" [disabled]="officePresenceForm.invalid || isSubmitting">
+          {{ isSubmitting ? 'Submitting...' : 'Submit Presence' }}
         </button>
       </div>
 
-      <p class="presence-form__status presence-form__status--error" *ngIf="loginError" aria-live="assertive">
-        {{ loginError }}
+      <p class="presence-form__status presence-form__status--success" *ngIf="submitSuccess" aria-live="polite">
+        Office presence submitted successfully.
+      </p>
+      <p class="presence-form__status presence-form__status--error" *ngIf="submitError" aria-live="assertive">
+        {{ submitError }}
       </p>
     </form>
   </section>
-
-  <ng-template #officePresenceFormTemplate>
-    <section class="presence-form">
-      <h3>Office Presence Submission</h3>
-      <form [formGroup]="officePresenceForm" class="presence-form__body" novalidate (ngSubmit)="onSubmit()">
-        <div class="presence-form__field">
-          <label for="presence-name">Name</label>
-          <input
-            id="presence-name"
-            type="text"
-            formControlName="name"
-            placeholder="Enter your full name"
-          />
-          <p class="presence-form__error" *ngIf="officePresenceForm.get('name')?.hasError('required') && officePresenceForm.get('name')?.touched">
-            Name is required.
-          </p>
-        </div>
-
-        <div class="presence-form__field">
-          <label for="presence-corp-id">Corp ID</label>
-          <input
-            id="presence-corp-id"
-            type="text"
-            formControlName="corpId"
-            placeholder="Enter your corporate ID"
-          />
-          <p class="presence-form__error" *ngIf="officePresenceForm.get('corpId')?.hasError('required') && officePresenceForm.get('corpId')?.touched">
-            Corp ID is required.
-          </p>
-        </div>
-
-        <div class="presence-form__field">
-          <label for="presence-location">Work Location</label>
-          <input
-            id="presence-location"
-            type="text"
-            formControlName="workLocation"
-            placeholder="e.g. Headquarters, Remote"
-          />
-          <p class="presence-form__error" *ngIf="officePresenceForm.get('workLocation')?.hasError('required') && officePresenceForm.get('workLocation')?.touched">
-            Work location is required.
-          </p>
-        </div>
-
-        <div class="presence-form__field">
-          <label for="presence-days">Number of Office Days (per month)</label>
-          <input
-            id="presence-days"
-            type="number"
-            min="0"
-            formControlName="daysInOffice"
-            placeholder="Enter the number of days you visited the office"
-          />
-          <p class="presence-form__error" *ngIf="officePresenceForm.get('daysInOffice')?.hasError('required') && officePresenceForm.get('daysInOffice')?.touched">
-            Please provide the number of days in office.
-          </p>
-          <p class="presence-form__error" *ngIf="officePresenceForm.get('daysInOffice')?.hasError('min') && officePresenceForm.get('daysInOffice')?.touched">
-            Days in office cannot be negative.
-          </p>
-        </div>
-
-        <div class="presence-form__field">
-          <label for="presence-reason">Reason for Not Coming <span aria-hidden="true">(Optional)</span></label>
-          <textarea
-            id="presence-reason"
-            formControlName="reasonForNotComing"
-            rows="3"
-            placeholder="Share any context for days spent away from the office"
-          ></textarea>
-        </div>
-
-        <div class="presence-form__actions">
-          <button type="submit" [disabled]="officePresenceForm.invalid || isSubmitting">
-            {{ isSubmitting ? 'Submitting...' : 'Submit Presence' }}
-          </button>
-        </div>
-
-        <p class="presence-form__status presence-form__status--success" *ngIf="submitSuccess" aria-live="polite">
-          Office presence submitted successfully.
-        </p>
-        <p class="presence-form__status presence-form__status--error" *ngIf="submitError" aria-live="assertive">
-          {{ submitError }}
-        </p>
-      </form>
-    </section>
-  </ng-template>
 </app-tab-content-view>
