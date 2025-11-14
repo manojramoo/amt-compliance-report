@@ -1,6 +1,6 @@
 <section class="report">
   <header class="report__header">
-    <h2 class="report__title">Compliance performance summary</h2>
+    <h1 class="report__title">Compliance performance summary</h1>
     <p class="report__subtitle">
       Review the latest attendance, leave, and utilization metrics captured across all teams.
       This on-demand report is refreshed daily to support regulatory reviews and leadership
@@ -8,30 +8,71 @@
     </p>
   </header>
 
-  <article class="report__card">
-    <h3 class="report__card-title">Report highlights</h3>
-    <ul class="report__list">
-      <li class="report__list-item">
-        Attendance adherence is holding steady at
-        <span class="report__metric">97.2%</span> across locations.
-      </li>
-      <li class="report__list-item">
-        <span class="report__metric">12</span> team members have outstanding time sheets that
-        require follow-up.
-      </li>
-      <li class="report__list-item">
-        Leave plan submissions increased by <span class="report__metric">8%</span> week-over-week.
-      </li>
-    </ul>
-  </article>
+  <div class="report__summary-grid">
+    <article class="report__card">
+      <h2 class="report__card-title">Report highlights</h2>
+      <ul class="report__list">
+        <li class="report__list-item">
+          Attendance adherence is holding steady at
+          <span class="report__metric">97.2%</span> across locations.
+        </li>
+        <li class="report__list-item">
+          <span class="report__metric">12</span> team members have outstanding time sheets that
+          require follow-up.
+        </li>
+        <li class="report__list-item">
+          Leave plan submissions increased by <span class="report__metric">8%</span> week-over-week.
+        </li>
+      </ul>
+    </article>
 
-  <article class="report__card">
-    <h3 class="report__card-title">Next actions</h3>
-    <p class="report__text">
-      Share this report with regional managers and confirm that remediation plans are in place
-      for any teams below compliance thresholds. A detailed export is available from the data
-      operations workspace if additional analysis is needed.
-    </p>
-    <a class="report__link" href="#">Open detailed export workspace</a>
-  </article>
+    <article class="report__card">
+      <h2 class="report__card-title">Next actions</h2>
+      <p class="report__text">
+        Share this report with regional managers and confirm that remediation plans are in place
+        for any teams below compliance thresholds. A detailed export is available from the data
+        operations workspace if additional analysis is needed.
+      </p>
+      <a class="report__link" href="#">Open detailed export workspace</a>
+    </article>
+  </div>
+
+  <section class="report__tabs" aria-labelledby="report-tabs-title">
+    <div class="report__tabs-header">
+      <h2 id="report-tabs-title">Reports</h2>
+      <p>Track compliance insights across workforce reporting.</p>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Reports tabs">
+      <button
+        *ngFor="let tab of reportTabs; trackBy: trackReportTabsById"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeReportTab() === tab.id"
+        [attr.aria-controls]="tab.id + '-panel'"
+        [class.tabs__tab--active]="activeReportTab() === tab.id"
+        class="tabs__tab"
+        (click)="setActiveReportTab(tab.id)"
+      >
+        {{ tab.label }}
+      </button>
+    </nav>
+
+    <section
+      class="tab-panel"
+      role="tabpanel"
+      [attr.id]="activeReportTab() + '-panel'"
+      [attr.aria-live]="'polite'"
+    >
+      <ng-container [ngSwitch]="activeReportTab()">
+        <app-time-sheet-defaulter-tab *ngSwitchCase="'time-sheet-defaulter'"></app-time-sheet-defaulter-tab>
+        <app-resource-utilization-report-tab
+          *ngSwitchCase="'resource-utilization-report'"
+        ></app-resource-utilization-report-tab>
+        <app-leave-compliance-report-tab
+          *ngSwitchCase="'leave-compliance-report'"
+        ></app-leave-compliance-report-tab>
+      </ng-container>
+    </section>
+  </section>
 </section>

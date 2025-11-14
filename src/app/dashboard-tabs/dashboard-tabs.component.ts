@@ -1,14 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation, signal } from '@angular/core';
-import {
-  FormTabIdentifier,
-  ReportTabIdentifier
-} from './models/tab-content.model';
+import { FormTabIdentifier } from './models/tab-content.model';
 import { LeavePlansTabComponent } from './tabs/leave-plans-tab/leave-plans-tab.component';
 import { ReturnToOfficeTabComponent } from './tabs/return-to-office-tab/return-to-office-tab.component';
-import { TimeSheetDefaulterTabComponent } from './tabs/time-sheet-defaulter-tab/time-sheet-defaulter-tab.component';
-import { ResourceUtilizationReportTabComponent } from './tabs/resource-utilization-report-tab/resource-utilization-report-tab.component';
-import { LeaveComplianceReportTabComponent } from './tabs/leave-compliance-report-tab/leave-compliance-report-tab.component';
 
 @Component({
   selector: 'app-dashboard-tabs',
@@ -16,10 +10,7 @@ import { LeaveComplianceReportTabComponent } from './tabs/leave-compliance-repor
   imports: [
     CommonModule,
     ReturnToOfficeTabComponent,
-    LeavePlansTabComponent,
-    TimeSheetDefaulterTabComponent,
-    ResourceUtilizationReportTabComponent,
-    LeaveComplianceReportTabComponent
+    LeavePlansTabComponent
   ],
   templateUrl: './dashboard-tabs.component.html',
   styleUrl: './dashboard-tabs.component.css',
@@ -31,39 +22,17 @@ export class DashboardTabsComponent {
     { id: 'leave-plans', label: 'Leave Plans' }
   ];
 
-  readonly reportTabs: { id: ReportTabIdentifier; label: string }[] = [
-    { id: 'time-sheet-defaulter', label: 'Time Sheet Defaulter' },
-    { id: 'resource-utilization-report', label: 'Resource Utilization' },
-    { id: 'leave-compliance-report', label: 'Leave Compliance' }
-  ];
-
   protected readonly activeFormTab = signal<FormTabIdentifier>(
     this.formTabs[0].id
-  );
-
-  protected readonly activeReportTab = signal<ReportTabIdentifier>(
-    this.reportTabs[0].id
   );
 
   protected setActiveFormTab(tabId: FormTabIdentifier): void {
     this.activeFormTab.set(tabId);
   }
-
-  protected setActiveReportTab(tabId: ReportTabIdentifier): void {
-    this.activeReportTab.set(tabId);
-  }
-
   protected trackFormTabsById(
     _: number,
     tab: { id: FormTabIdentifier }
   ): FormTabIdentifier {
-    return tab.id;
-  }
-
-  protected trackReportTabsById(
-    _: number,
-    tab: { id: ReportTabIdentifier }
-  ): ReportTabIdentifier {
     return tab.id;
   }
 }
