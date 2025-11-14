@@ -70,6 +70,12 @@
     >
       <ng-container [ngSwitch]="activeReportTab()">
         <app-time-sheet-defaulter-tab *ngSwitchCase="'time-sheet-defaulter'"></app-time-sheet-defaulter-tab>
+        <app-resource-utilization-report-tab
+          *ngSwitchCase="'resource-utilization-report'"
+        ></app-resource-utilization-report-tab>
+        <app-leave-compliance-report-tab
+          *ngSwitchCase="'leave-compliance-report'"
+        ></app-leave-compliance-report-tab>
       </ng-container>
     </section>
   </section>

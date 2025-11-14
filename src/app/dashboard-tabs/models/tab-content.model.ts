@@ -1,4 +1,10 @@
-export type TabIdentifier = 'return-to-office' | 'leave-plans' | 'time-sheet-defaulter';
+export type FormTabIdentifier = 'return-to-office' | 'leave-plans';
+export type ReportTabIdentifier =
+  | 'time-sheet-defaulter'
+  | 'resource-utilization-report'
+  | 'leave-compliance-report';
+
+export type TabIdentifier = FormTabIdentifier | ReportTabIdentifier;
 
 export interface Metric {
   label: string;
