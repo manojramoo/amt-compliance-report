@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation, signal } from '@angular/core';
-import { TabIdentifier } from './models/tab-content.model';
+import {
+  FormTabIdentifier,
+  ReportTabIdentifier
+} from './models/tab-content.model';
 import { LeavePlansTabComponent } from './tabs/leave-plans-tab/leave-plans-tab.component';
 import { ReturnToOfficeTabComponent } from './tabs/return-to-office-tab/return-to-office-tab.component';
 import { TimeSheetDefaulterTabComponent } from './tabs/time-sheet-defaulter-tab/time-sheet-defaulter-tab.component';
-
-type FormTabIdentifier = Exclude<TabIdentifier, 'time-sheet-defaulter'>;
-type ReportTabIdentifier = Extract<TabIdentifier, 'time-sheet-defaulter'>;
+import { ResourceUtilizationReportTabComponent } from './tabs/resource-utilization-report-tab/resource-utilization-report-tab.component';
+import { LeaveComplianceReportTabComponent } from './tabs/leave-compliance-report-tab/leave-compliance-report-tab.component';
 
 @Component({
   selector: 'app-dashboard-tabs',
@@ -15,7 +17,9 @@ type ReportTabIdentifier = Extract<TabIdentifier, 'time-sheet-defaulter'>;
     CommonModule,
     ReturnToOfficeTabComponent,
     LeavePlansTabComponent,
-    TimeSheetDefaulterTabComponent
+    TimeSheetDefaulterTabComponent,
+    ResourceUtilizationReportTabComponent,
+    LeaveComplianceReportTabComponent
   ],
   templateUrl: './dashboard-tabs.component.html',
   styleUrl: './dashboard-tabs.component.css',
@@ -28,7 +32,9 @@ export class DashboardTabsComponent {
   ];
 
   readonly reportTabs: { id: ReportTabIdentifier; label: string }[] = [
-    { id: 'time-sheet-defaulter', label: 'Time Sheet Defaulter' }
+    { id: 'time-sheet-defaulter', label: 'Time Sheet Defaulter' },
+    { id: 'resource-utilization-report', label: 'Resource Utilization' },
+    { id: 'leave-compliance-report', label: 'Leave Compliance' }
   ];
 
   protected readonly activeFormTab = signal<FormTabIdentifier>(
