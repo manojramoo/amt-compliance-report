@@ -1,7 +1,16 @@
 <nav class="navigation-bar">
   <div class="navigation-bar__brand">AMT Compliance</div>
   <ul class="navigation-bar__links">
-    <li><a href="#" class="is-active">Forms</a></li>
-    <li><a href="#">Report</a></li>
+    <li>
+      <a
+        routerLink="/"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Forms</a
+      >
+    </li>
+    <li>
+      <a routerLink="/report" routerLinkActive="is-active">Report</a>
+    </li>
   </ul>
 </nav>
