@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+.presence {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.presence__header {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.presence__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.presence__subtitle {
+  margin: 0;
+  color: var(--report-text-muted, #4a5568);
+}
+
+.presence__status {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background-color: rgba(59, 130, 246, 0.08);
+  color: var(--report-text-muted, #1a202c);
+}
+
+.presence__status--error {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #991b1b;
+}
+
+.presence__table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.presence__table th,
+.presence__table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.presence__table thead {
+  background-color: rgba(79, 70, 229, 0.08);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #4338ca;
+}
+
+.presence__table tbody tr:nth-child(even) {
+  background-color: rgba(59, 130, 246, 0.05);
+}

@@ -1,7 +1,7 @@
 export type FormTabIdentifier = 'return-to-office' | 'leave-plans';
 export type ReportTabIdentifier =
   | 'time-sheet-defaulter'
-  | 'resource-utilization-report'
+  | 'office-presence-data'
   | 'leave-compliance-report';
 
 export type TabIdentifier = FormTabIdentifier | ReportTabIdentifier;
