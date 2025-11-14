@@ -29,33 +29,13 @@ export class ReturnToOfficeTabComponent {
 
   protected readonly content: TabContent = {
     title: 'Return to Office Overview',
-    description: 'Monitor workplace attendance and the adoption of hybrid work policies across teams.',
+    description: 'Fidelity Return to office',
     metrics: [
-      { label: 'Hybrid Attendance', value: '68%', change: '+3% vs. last month', positive: true },
-      { label: 'On-site Coverage', value: '4.5 days', change: '+0.5 day goal gap', positive: false },
-      { label: 'Desk Utilization', value: '72%', change: '+8% compared to Q1', positive: true }
     ],
     insights: [
-      {
-        title: 'Key Insights',
-        points: [
-          'Teams in the product group continue to exceed attendance targets by 12%.',
-          'Customer support has the lowest presence; monitor week 32 for improvement.',
-          'Consider increasing shuttle frequency on high-demand days (Tue/Wed).'
-        ]
-      },
-      {
-        title: 'Engagement Pulse',
-        points: [
-          '82% of employees report satisfaction with the current hybrid schedule.',
-          'Facilities requests dropped by 15% after flexible seating rollout.'
-        ]
-      }
     ],
     actions: [
-      'Share weekly occupancy snapshot with department heads.',
-      'Confirm conference room sensor calibration before leadership summit.',
-      'Pilot optional Friday remote day for engineering squads.'
+      
     ]
   };
 
@@ -91,7 +71,7 @@ export class ReturnToOfficeTabComponent {
     };
 
     this.isSubmitting = true;
-    this.httpClient.post('/api/office-presence', payload).subscribe({
+    this.httpClient.post('http://localhost:8080/formsubmit', payload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.submitSuccess = true;
