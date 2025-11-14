@@ -1,1 +1,46 @@
-<app-tab-content-view [content]="content"></app-tab-content-view>
+<app-tab-content-view [content]="content">
+  <form class="leave-plan-form" [formGroup]="leavePlanForm" (ngSubmit)="onSubmit()">
+    <fieldset>
+      <legend>Annual Leave Plan</legend>
+
+      <div class="form-field">
+        <label for="leave-plan-name">Name</label>
+        <input id="leave-plan-name" type="text" formControlName="name" placeholder="Employee name" required />
+        <p class="form-field__error" *ngIf="leavePlanForm.get('name')?.touched && leavePlanForm.get('name')?.invalid">
+          Name is required and must be 100 characters or fewer.
+        </p>
+      </div>
+
+      <div class="form-field">
+        <label for="leave-plan-start">Start date</label>
+        <input id="leave-plan-start" type="date" formControlName="startDate" required />
+        <p class="form-field__error" *ngIf="leavePlanForm.get('startDate')?.touched && leavePlanForm.get('startDate')?.invalid">
+          Select a valid start date.
+        </p>
+      </div>
+
+      <div class="form-field">
+        <label for="leave-plan-end">End date</label>
+        <input id="leave-plan-end" type="date" formControlName="endDate" required />
+        <p class="form-field__error" *ngIf="leavePlanForm.get('endDate')?.touched && leavePlanForm.get('endDate')?.invalid">
+          Select a valid end date.
+        </p>
+      </div>
+
+      <div class="form-field">
+        <label for="leave-plan-working-days">Working days</label>
+        <input
+          id="leave-plan-working-days"
+          type="text"
+          formControlName="workingDays"
+          readonly
+          placeholder="Calculated automatically"
+        />
+      </div>
+    </fieldset>
+
+    <button type="submit" [disabled]="leavePlanForm.invalid">Submit leave plan</button>
+  </form>
+
+  <p class="submission-message" *ngIf="submissionMessage()">{{ submissionMessage() }}</p>
+</app-tab-content-view>

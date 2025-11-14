@@ -1,0 +1,79 @@
+.leave-plan-form {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 0.75rem;
+  background-color: var(--card-background, #ffffff);
+  display: grid;
+  gap: 1rem;
+}
+
+.leave-plan-form fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.leave-plan-form legend {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.form-field label {
+  font-weight: 500;
+}
+
+.form-field input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 0.5rem;
+  font: inherit;
+}
+
+.form-field input[readonly] {
+  background-color: var(--muted-background, #f3f4f6);
+  color: var(--muted-text, #4b5563);
+}
+
+.form-field__error {
+  color: #b91c1c;
+  font-size: 0.85rem;
+}
+
+.leave-plan-form button[type='submit'] {
+  justify-self: flex-start;
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.leave-plan-form button[type='submit'][disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.leave-plan-form button[type='submit']:not([disabled]):hover {
+  opacity: 0.85;
+}
+
+.submission-message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--success-background, #ecfdf5);
+  color: var(--success-text, #047857);
+  font-weight: 500;
+}
