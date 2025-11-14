@@ -12,5 +12,13 @@
     <li>
       <a routerLink="/report" routerLinkActive="is-active">Report</a>
     </li>
+    <li *ngIf="!authService.authStatus()">
+      <a routerLink="/login" routerLinkActive="is-active">Login</a>
+    </li>
+    <li *ngIf="authService.authStatus()">
+      <button class="navigation-bar__logout-button" type="button" (click)="logout()">
+        Logout
+      </button>
+    </li>
   </ul>
 </nav>
