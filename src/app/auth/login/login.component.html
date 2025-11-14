@@ -1,0 +1,51 @@
+<section class="login">
+  <header class="login__header">
+    <h1 class="login__title">Secure Access</h1>
+    <p class="login__subtitle">
+      Enter your administrator credentials to view the compliance report.
+    </p>
+  </header>
+
+  <form
+    class="login__form"
+    [formGroup]="loginForm"
+    (ngSubmit)="submitCredentials()"
+    novalidate
+  >
+    <div class="login__field">
+      <label class="login__label" for="username">Username</label>
+      <input
+        class="login__input"
+        id="username"
+        type="text"
+        formControlName="username"
+        autocomplete="username"
+        (input)="clearAuthenticationError()"
+      />
+      <p class="login__validation" *ngIf="loginForm.controls.username.touched && loginForm.controls.username.invalid">
+        Username is required.
+      </p>
+    </div>
+
+    <div class="login__field">
+      <label class="login__label" for="password">Password</label>
+      <input
+        class="login__input"
+        id="password"
+        type="password"
+        formControlName="password"
+        autocomplete="current-password"
+        (input)="clearAuthenticationError()"
+      />
+      <p class="login__validation" *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid">
+        Password is required.
+      </p>
+    </div>
+
+    <p class="login__error" *ngIf="authenticationError() as errorMessage">
+      {{ errorMessage }}
+    </p>
+
+    <button class="login__submit" type="submit">Sign in</button>
+  </form>
+</section>
