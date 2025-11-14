@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TabContentViewComponent } from '../../components/tab-content-view/tab-content-view.component';
 import { TabContent } from '../../models/tab-content.model';
@@ -13,6 +13,8 @@ import { TabContent } from '../../models/tab-content.model';
 })
 export class LeavePlansTabComponent {
   protected readonly submissionMessage = signal('');
+
+  private readonly formBuilder = inject(FormBuilder);
 
   protected readonly leavePlanForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -30,7 +32,7 @@ export class LeavePlansTabComponent {
     ]
   };
 
-  constructor(private readonly formBuilder: FormBuilder) {
+  constructor() {
     this.leavePlanForm.valueChanges.subscribe(() => {
       this.submissionMessage.set('');
       this.updateWorkingDays();
