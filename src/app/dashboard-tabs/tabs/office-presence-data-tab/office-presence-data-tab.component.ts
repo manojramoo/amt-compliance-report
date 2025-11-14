@@ -5,7 +5,7 @@ import { Subject, catchError, of, switchMap, takeUntil, timer } from 'rxjs';
 
 interface OfficePresenceRecord {
   name: string;
-  corpId: string;
+  corpID: string;
   location: string;
 }
 
@@ -59,6 +59,6 @@ export class OfficePresenceDataTabComponent implements OnDestroy {
   }
 
   protected trackByCorpId(_: number, record: OfficePresenceRecord): string {
-    return record.corpId;
+    return record.corpID;
   }
 }
