@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { ReportTabIdentifier } from '../dashboard-tabs/models/tab-content.model';
 import { LeaveComplianceReportTabComponent } from '../dashboard-tabs/tabs/leave-compliance-report-tab/leave-compliance-report-tab.component';
-import { ResourceUtilizationReportTabComponent } from '../dashboard-tabs/tabs/resource-utilization-report-tab/resource-utilization-report-tab.component';
+import { OfficePresenceDataTabComponent } from '../dashboard-tabs/tabs/office-presence-data-tab/office-presence-data-tab.component';
 import { TimeSheetDefaulterTabComponent } from '../dashboard-tabs/tabs/time-sheet-defaulter-tab/time-sheet-defaulter-tab.component';
 
 @Component({
@@ -19,7 +19,7 @@ import { TimeSheetDefaulterTabComponent } from '../dashboard-tabs/tabs/time-shee
   imports: [
     CommonModule,
     TimeSheetDefaulterTabComponent,
-    ResourceUtilizationReportTabComponent,
+    OfficePresenceDataTabComponent,
     LeaveComplianceReportTabComponent
   ],
   templateUrl: './report.component.html',
@@ -32,7 +32,7 @@ export class ReportComponent {
 
   readonly reportTabs: { id: ReportTabIdentifier; label: string }[] = [
     { id: 'time-sheet-defaulter', label: 'Time Sheet Defaulter' },
-    { id: 'resource-utilization-report', label: 'Resource Utilization' },
+    { id: 'office-presence-data', label: 'Office Presence Data' },
     { id: 'leave-compliance-report', label: 'Leave Compliance' }
   ];
 

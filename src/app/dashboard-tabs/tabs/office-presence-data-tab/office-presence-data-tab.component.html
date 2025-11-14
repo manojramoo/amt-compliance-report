@@ -1,0 +1,40 @@
+<section class="presence">
+  <header class="presence__header">
+    <h3 class="presence__title">Office presence data</h3>
+    <p class="presence__subtitle">
+      Live view of employees currently checked in to on-site locations. Data refreshes every
+      {{ refreshIntervalMs / 1000 }} seconds.
+    </p>
+  </header>
+
+  <div *ngIf="loading(); else presenceContent" class="presence__status" aria-live="polite">
+    Loading office presence data...
+  </div>
+
+  <ng-template #presenceContent>
+    <p *ngIf="error()" class="presence__status presence__status--error" role="alert">
+      {{ error() }}
+    </p>
+
+    <table *ngIf="presenceData().length; else emptyState" class="presence__table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Corp ID</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of presenceData(); trackBy: trackByCorpId">
+          <td>{{ record.name }}</td>
+          <td>{{ record.corpId }}</td>
+          <td>{{ record.location }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #emptyState>
+      <p class="presence__status" aria-live="polite">No office presence records available.</p>
+    </ng-template>
+  </ng-template>
+</section>
